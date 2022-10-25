@@ -5,7 +5,6 @@ on: [pull_request]
 jobs:
   lint:
     name: Run Linter
-    needs: setup
     runs-on: ubuntu-latest
 
     steps:
@@ -28,7 +27,6 @@ jobs:
 
   tests:
     name: Run Unit Tests
-    needs: setup
     runs-on: ubuntu-latest
 
     steps:
@@ -46,5 +44,5 @@ jobs:
 
     - name: Install dependencies
       run: composer update --ignore-platform-reqs --optimize-autoloader --no-plugins --no-scripts --prefer-dist
-      
+
     - run: composer test
