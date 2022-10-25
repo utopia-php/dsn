@@ -3,8 +3,9 @@ name: "Pull Request Checks"
 on: [pull_request]
 
 jobs:
-  setup:
-    name: Setup CI
+  lint:
+    name: Run Linter
+    needs: setup
     runs-on: ubuntu-latest
 
     steps:
@@ -23,12 +24,6 @@ jobs:
     - name: Install dependencies
       run: composer update --ignore-platform-reqs --optimize-autoloader --no-plugins --no-scripts --prefer-dist
 
-  lint:
-    name: Run Pint
-    needs: setup
-    runs-on: ubuntu-latest
-
-    steps:
     - run: composer lint
 
   tests:
@@ -37,4 +32,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - run: vendor/bin/phpunit --configuration phpunit.xml tests
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - run: git checkout HEAD^2
+
+    - name: Install dependencies
+      run: composer update --ignore-platform-reqs --optimize-autoloader --no-plugins --no-scripts --prefer-dist
+      
+    - run: composer test
