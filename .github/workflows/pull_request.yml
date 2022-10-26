@@ -1,0 +1,48 @@
+name: "Pull Request Checks"
+
+on: [pull_request]
+
+jobs:
+  lint:
+    name: Run Linter
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - run: git checkout HEAD^2
+
+    - name: Install dependencies
+      run: composer update --ignore-platform-reqs --optimize-autoloader --no-plugins --no-scripts --prefer-dist
+
+    - run: composer lint
+
+  tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - run: git checkout HEAD^2
+
+    - name: Install dependencies
+      run: composer update --ignore-platform-reqs --optimize-autoloader --no-plugins --no-scripts --prefer-dist
+
+    - run: composer test
