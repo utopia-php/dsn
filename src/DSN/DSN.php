@@ -40,6 +40,11 @@ class DSN
     protected ?string $query;
 
     /**
+     * @var ?array
+     */
+    protected ?array $params = null;
+
+    /**
      * Construct
      *
      * Construct a new DSN object
@@ -136,16 +141,20 @@ class DSN
     /**
      * Return a query parameter by its key
      *
-     * @return ?string
+     * @return string
      */
-    public function getParam(string $key): ?string
+    public function getParam(string $key, string $default = ''): string
     {
-        if (! $this->query) {
-            return null;
+        if (isset($this->params[$key])) {
+            return $this->params[$key];
         }
 
-        parse_str($this->query, $params);
+        if (! $this->query) {
+            return $default;
+        }
 
-        return $params[$key] ?? null;
+        parse_str($this->query, $this->params);
+
+        return $this->params[$key] ?? $default;
     }
 }
