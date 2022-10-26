@@ -27,6 +27,8 @@ $host = $dsn->getHost(); // localhost
 $port = $dsn->getPort(); // 3306
 $path = $dsn->getPath(); // database
 $query = $dsn->getQuery(); // charset=utf8&timezone=UTC
+$charset = $dsn->getParam('charset') // utf8
+$timezone = $dsn->getParam('timezone') // UTC
 ```
 
 ## Tests

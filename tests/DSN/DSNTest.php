@@ -17,6 +17,9 @@ class DSNTest extends TestCase
         $this->assertEquals('3306', $dsn->getPort());
         $this->assertEquals('database', $dsn->getPath());
         $this->assertEquals('charset=utf8&timezone=UTC', $dsn->getQuery());
+        $this->assertEquals('utf8', $dsn->getParam('charset'));
+        $this->assertEquals('UTC', $dsn->getParam('timezone'));
+        $this->assertNull($dsn->getParam('doesNotExist'));
 
         $dsn = new DSN('mariadb://user@localhost:3306/database?charset=utf8&timezone=UTC');
         $this->assertEquals('mariadb', $dsn->getScheme());
@@ -26,6 +29,9 @@ class DSNTest extends TestCase
         $this->assertEquals('3306', $dsn->getPort());
         $this->assertEquals('database', $dsn->getPath());
         $this->assertEquals('charset=utf8&timezone=UTC', $dsn->getQuery());
+        $this->assertEquals('utf8', $dsn->getParam('charset'));
+        $this->assertEquals('UTC', $dsn->getParam('timezone'));
+        $this->assertNull($dsn->getParam('doesNotExist'));
 
         $dsn = new DSN('mariadb://user@localhost/database?charset=utf8&timezone=UTC');
         $this->assertEquals('mariadb', $dsn->getScheme());
@@ -35,6 +41,9 @@ class DSNTest extends TestCase
         $this->assertNull($dsn->getPort());
         $this->assertEquals('database', $dsn->getPath());
         $this->assertEquals('charset=utf8&timezone=UTC', $dsn->getQuery());
+        $this->assertEquals('utf8', $dsn->getParam('charset'));
+        $this->assertEquals('UTC', $dsn->getParam('timezone'));
+        $this->assertNull($dsn->getParam('doesNotExist'));
 
         $dsn = new DSN('mariadb://user@localhost?charset=utf8&timezone=UTC');
         $this->assertEquals('mariadb', $dsn->getScheme());
@@ -44,6 +53,9 @@ class DSNTest extends TestCase
         $this->assertNull($dsn->getPort());
         $this->assertEmpty($dsn->getPath());
         $this->assertEquals('charset=utf8&timezone=UTC', $dsn->getQuery());
+        $this->assertEquals('utf8', $dsn->getParam('charset'));
+        $this->assertEquals('UTC', $dsn->getParam('timezone'));
+        $this->assertNull($dsn->getParam('doesNotExist'));
 
         $dsn = new DSN('mariadb://user@localhost');
         $this->assertEquals('mariadb', $dsn->getScheme());
@@ -89,6 +101,8 @@ class DSNTest extends TestCase
         $this->assertEquals(3306, $dsn->getPort());
         $this->assertEquals('bucket', $dsn->getPath());
         $this->assertEquals('region=us-east-1', $dsn->getQuery());
+        $this->assertEquals('us-east-1', $dsn->getParam('region'));
+        $this->assertNull($dsn->getParam('doesNotExist'));
     }
 
     public function testFail(): void

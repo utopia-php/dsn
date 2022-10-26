@@ -132,4 +132,20 @@ class DSN
     {
         return $this->query;
     }
+
+    /**
+     * Return a query parameter by its key
+     * 
+     * @return ?string
+     */
+    public function getParam(string $key): ?string
+    {
+        if (!$this->query) {
+            return null;
+        }
+
+        parse_str($this->query, $params);
+
+        return $params[$key] ?? null;
+    }
 }
