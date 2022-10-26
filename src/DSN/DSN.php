@@ -135,12 +135,12 @@ class DSN
 
     /**
      * Return a query parameter by its key
-     * 
+     *
      * @return ?string
      */
     public function getParam(string $key): ?string
     {
-        if (!$this->query) {
+        if (! $this->query) {
             return null;
         }
 
