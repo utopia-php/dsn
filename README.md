@@ -1,4 +1,4 @@
-# Utopia Logger
+# Utopia DSN
 
 ![Total Downloads](https://img.shields.io/packagist/dt/utopia-php/dsn.svg)
 [![Discord](https://img.shields.io/discord/564160730845151244)](https://appwrite.io/discord)
