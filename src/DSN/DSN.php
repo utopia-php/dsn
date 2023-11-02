@@ -62,13 +62,9 @@ class DSN
         $this->scheme = $parts['scheme'] ?? null;
         $this->user = isset($parts['user']) ? \urldecode($parts['user']) : null;
         $this->password = isset($parts['pass']) ? \urldecode($parts['pass']) : null;
-        $this->host = $parts['host'] ?? null;
-        $this->user = $parts['user'] ?? null;
-        $this->password = $parts['pass'] ?? null;
         $this->host = $parts['host'] ?? '';
         $this->port = $parts['port'] ?? null;
-        $this->path = isset($parts['path']) ? ltrim($parts['path'], '/') : null;
-        $this->path = $parts['path'] ?? '';
+        $this->path = isset($parts['path']) ? ltrim($parts['path'], '/') : '';
         $this->query = $parts['query'] ?? null;
     }
 
@@ -133,7 +129,7 @@ class DSN
     }
 
     /**
-     * Return the query string
+     * Return the raw query string
      *
      * @return ?string
      */
