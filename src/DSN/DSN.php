@@ -64,7 +64,7 @@ class DSN
         $this->password = isset($parts['pass']) ? \urldecode($parts['pass']) : null;
         $this->host = $parts['host'] ?? '';
         $this->port = $parts['port'] ?? null;
-        $this->path = isset($parts['path']) ? ltrim($parts['path'], '/') : '';
+        $this->path = isset($parts['path']) ? ltrim((string)$parts['path'], '/') : '';
         $this->query = $parts['query'] ?? null;
     }
 
