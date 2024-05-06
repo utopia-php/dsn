@@ -9,8 +9,8 @@
         "psr-4": {"Utopia\\DSN\\": "src/DSN"}
     },
     "scripts": {
-      "lint": "./vendor/bin/pint --test",
-      "format": "./vendor/bin/pint",
+      "lint": "./vendor/bin/pint --test --preset psr12",
+      "format": "./vendor/bin/pint --preset psr12",
       "test": "./vendor/bin/phpunit --configuration phpunit.xml tests"
     },
     "require": {
