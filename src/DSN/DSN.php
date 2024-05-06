@@ -71,9 +71,9 @@ class DSN
     /**
      * Return the scheme.
      *
-     * @return string
+     * @return ?string
      */
-    public function getScheme(): string
+    public function getScheme(): ?string
     {
         return $this->scheme;
     }
