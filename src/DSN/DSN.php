@@ -5,9 +5,9 @@ namespace Utopia\DSN;
 class DSN
 {
     /**
-     * @var string
+     * @var ?string
      */
-    protected string $scheme;
+    protected ?string $scheme;
 
     /**
      * @var ?string
