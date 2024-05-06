@@ -5,9 +5,9 @@ namespace Utopia\DSN;
 class DSN
 {
     /**
-     * @var ?string
+     * @var string
      */
-    protected ?string $scheme;
+    protected string $scheme;
 
     /**
      * @var ?string
@@ -53,16 +53,24 @@ class DSN
      */
     public function __construct(string $dsn)
     {
-        $parts = parse_url($dsn);
+        $parts = \parse_url($dsn);
 
-        if (! $parts) {
+        if (!$parts) {
             throw new \InvalidArgumentException("Unable to parse DSN: $dsn");
         }
 
-        $this->scheme = $parts['scheme'] ?? null;
+        if (empty($parts['scheme'])) {
+            throw new \InvalidArgumentException('Unable to parse DSN: scheme is required');
+        }
+
+        if (empty($parts['host'])) {
+            throw new \InvalidArgumentException('Unable to parse DSN: host is required');
+        }
+
+        $this->scheme = $parts['scheme'];
         $this->user = isset($parts['user']) ? \urldecode($parts['user']) : null;
         $this->password = isset($parts['pass']) ? \urldecode($parts['pass']) : null;
-        $this->host = $parts['host'] ?? '';
+        $this->host = $parts['host'];
         $this->port = $parts['port'] ?? null;
         $this->path = isset($parts['path']) ? ltrim((string) $parts['path'], '/') : '';
         $this->query = $parts['query'] ?? null;
@@ -71,9 +79,9 @@ class DSN
     /**
      * Return the scheme.
      *
-     * @return ?string
+     * @return string
      */
-    public function getScheme(): ?string
+    public function getScheme(): string
     {
         return $this->scheme;
     }
