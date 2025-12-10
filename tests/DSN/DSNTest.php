@@ -148,9 +148,39 @@ class DSNTest extends TestCase
         $this->assertEquals('us-east-2', $dsn->getParam('region', 'us-east-2'));
     }
 
+    public function testSchemeOnly(): void
+    {
+        $dsn = new DSN('local://');
+        $this->assertEquals('local', $dsn->getScheme());
+        $this->assertNull($dsn->getUser());
+        $this->assertNull($dsn->getPassword());
+        $this->assertNull($dsn->getHost());
+        $this->assertNull($dsn->getPort());
+        $this->assertEmpty($dsn->getPath());
+        $this->assertNull($dsn->getQuery());
+
+        $dsn = new DSN('memory://');
+        $this->assertEquals('memory', $dsn->getScheme());
+        $this->assertNull($dsn->getUser());
+        $this->assertNull($dsn->getPassword());
+        $this->assertNull($dsn->getHost());
+        $this->assertNull($dsn->getPort());
+        $this->assertEmpty($dsn->getPath());
+        $this->assertNull($dsn->getQuery());
+
+        $dsn = new DSN('file://');
+        $this->assertEquals('file', $dsn->getScheme());
+        $this->assertNull($dsn->getUser());
+        $this->assertNull($dsn->getPassword());
+        $this->assertNull($dsn->getHost());
+        $this->assertNull($dsn->getPort());
+        $this->assertEmpty($dsn->getPath());
+        $this->assertNull($dsn->getQuery());
+    }
+
     public function testFail(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new DSN('mariadb://');
+        new DSN('invalid-dsn-without-scheme');
     }
 }

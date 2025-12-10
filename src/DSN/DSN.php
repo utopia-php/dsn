@@ -20,9 +20,9 @@ class DSN
     protected ?string $password;
 
     /**
-     * @var string
+     * @var ?string
      */
-    protected string $host;
+    protected ?string $host;
 
     /**
      * @var ?string
@@ -55,6 +55,19 @@ class DSN
     {
         $parts = \parse_url($dsn);
 
+        // Handle scheme-only DSNs like "local://" which parse_url returns false for
+        if (!$parts && \str_ends_with($dsn, '://') && \strlen($dsn) > 3) {
+            $this->scheme = \substr($dsn, 0, -3);
+            $this->user = null;
+            $this->password = null;
+            $this->host = null;
+            $this->port = null;
+            $this->path = '';
+            $this->query = null;
+
+            return;
+        }
+
         if (!$parts) {
             throw new \InvalidArgumentException("Unable to parse DSN: $dsn");
         }
@@ -63,14 +76,10 @@ class DSN
             throw new \InvalidArgumentException('Unable to parse DSN: scheme is required');
         }
 
-        if (empty($parts['host'])) {
-            throw new \InvalidArgumentException('Unable to parse DSN: host is required');
-        }
-
         $this->scheme = $parts['scheme'];
         $this->user = isset($parts['user']) ? \urldecode($parts['user']) : null;
         $this->password = isset($parts['pass']) ? \urldecode($parts['pass']) : null;
-        $this->host = $parts['host'];
+        $this->host = $parts['host'] ?? null;
         $this->port = $parts['port'] ?? null;
         $this->path = isset($parts['path']) ? ltrim((string) $parts['path'], '/') : '';
         $this->query = $parts['query'] ?? null;
@@ -109,9 +118,9 @@ class DSN
     /**
      * Return the host
      *
-     * @return string
+     * @return ?string
      */
-    public function getHost(): string
+    public function getHost(): ?string
     {
         return $this->host;
     }
