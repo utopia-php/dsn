@@ -138,6 +138,43 @@ class DSNTest extends TestCase
         $this->assertEquals("value=$encoded", $dsn->getQuery());
     }
 
+    public function testPartial(): void
+    {
+        $dsn = new DSN('redis://user@');
+        $this->assertEquals('redis', $dsn->getScheme());
+        $this->assertEquals('user', $dsn->getUser());
+        $this->assertNull($dsn->getPassword());
+        $this->assertSame('', $dsn->getHost());
+        $this->assertNull($dsn->getPort());
+        $this->assertEmpty($dsn->getPath());
+        $this->assertNull($dsn->getQuery());
+
+        $dsn = new DSN('redis://:secret@');
+        $this->assertEmpty($dsn->getUser());
+        $this->assertEquals('secret', $dsn->getPassword());
+        $this->assertSame('', $dsn->getHost());
+        $this->assertNull($dsn->getPort());
+        $this->assertEmpty($dsn->getPath());
+        $this->assertNull($dsn->getQuery());
+
+        $dsn = new DSN('redis:///cache');
+        $this->assertNull($dsn->getUser());
+        $this->assertNull($dsn->getPassword());
+        $this->assertSame('', $dsn->getHost());
+        $this->assertNull($dsn->getPort());
+        $this->assertEquals('cache', $dsn->getPath());
+        $this->assertNull($dsn->getQuery());
+
+        $dsn = new DSN('redis://?timeout=5');
+        $this->assertNull($dsn->getUser());
+        $this->assertNull($dsn->getPassword());
+        $this->assertSame('', $dsn->getHost());
+        $this->assertNull($dsn->getPort());
+        $this->assertEmpty($dsn->getPath());
+        $this->assertEquals('timeout=5', $dsn->getQuery());
+        $this->assertEquals('5', $dsn->getParam('timeout'));
+    }
+
     public function testGetParam(): void
     {
         $dsn = new DSN('mariadb://user:password@localhost:3306/database?charset=utf8&timezone=UTC');
